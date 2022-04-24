@@ -51,5 +51,6 @@ public class GameManager : MonoBehaviour
     {
         //TODO: manage points/score
         Balloon.transform.position = instance.balloonSpawn.position;
+        Balloon.photonView.RPC("ChangeTeam", RpcTarget.All, -1);
     }
 }
