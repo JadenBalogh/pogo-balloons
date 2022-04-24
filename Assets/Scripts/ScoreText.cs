@@ -5,7 +5,7 @@ using TMPro;
 
 public class ScoreText : MonoBehaviour
 {
-    [SerializeField] private Balloon balloon;
+    [SerializeField] private int team = 1;
 
     private TextMeshProUGUI textbox;
 
@@ -15,7 +15,19 @@ public class ScoreText : MonoBehaviour
     }
 
     private void Start()
-    {  
-        balloon.OnScoreChanged.AddListener((score) => textbox.text = "Bounces: " + score.ToString());
+    {
+        GameManager.OnScoreChanged.AddListener(UpdateScore);
+    }
+
+    private void UpdateScore(int team1Score, int team2Score)
+    {
+        if (team == 1)
+        {
+            textbox.text = team1Score.ToString();
+        }
+        else
+        {
+            textbox.text = team2Score.ToString();
+        }
     }
 }
