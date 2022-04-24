@@ -138,7 +138,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e7db23b9f4dd554692a45a2b1feb6ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPos: {fileID: 0}
   playerMask:
     serializedVersion: 2
     m_Bits: 64

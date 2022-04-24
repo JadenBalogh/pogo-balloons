@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
 public class Player : MonoBehaviourPun
 {
@@ -28,6 +29,8 @@ public class Player : MonoBehaviourPun
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private float knockback = 10f;
 
+    public int TeamNumber { get => photonView.Controller.GetPlayerNumber() % 2; }
+
     private float inputH = 0;
     private float springComp = 0;
     private bool isGrounded = true;
@@ -41,7 +44,13 @@ public class Player : MonoBehaviourPun
 
     private void Start()
     {
-        
+        UpdateColor();
+        PlayerNumbering.OnPlayerNumberingChanged += UpdateColor;
+    }
+
+    private void UpdateColor()
+    {
+        playerVisual.GetComponent<SpriteRenderer>().color = TeamNumber == 0 ? GameManager.Team1Color : GameManager.Team2Color;
     }
 
     private void Update()
@@ -73,17 +82,6 @@ public class Player : MonoBehaviourPun
             Vector2 bounceDir = new Vector2(Mathf.Cos(rotAngle), Mathf.Sin(rotAngle)).normalized;
             float bounceForce = Mathf.Lerp(minBounceForce, maxBounceForce, springComp);
             rb2D.AddForce(bounceDir * bounceForce, ForceMode2D.Impulse);
-        }
-
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D jumpCol = Physics2D.OverlapCircle(mousePos, 3f, playerLayer);
-            if (jumpCol != null)
-            {
-                Vector2 targetPos = jumpCol.transform.position;
-                jumpCol.GetComponent<Rigidbody2D>().AddForce((targetPos - mousePos).normalized * knockback, ForceMode2D.Impulse);
-            }
         }
     }
 
