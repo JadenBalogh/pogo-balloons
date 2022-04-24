@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviourPun
 {
     [Header("Controls")]
     [SerializeField] private float correctForceProportion = 0.5f;
@@ -38,8 +39,18 @@ public class Player : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        
+    }
+
     private void Update()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         inputH = Input.GetAxis("Horizontal");
 
         Collider2D groundCol = Physics2D.OverlapCircle(footRef.position, groundedRadius, groundMask);
@@ -78,6 +89,11 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         rb2D.AddTorque(-inputH * inputRotationForce);
         rb2D.AddTorque(-rb2D.rotation * correctForceProportion);
     }
