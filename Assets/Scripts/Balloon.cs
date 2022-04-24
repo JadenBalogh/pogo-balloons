@@ -8,13 +8,18 @@ public class Balloon : MonoBehaviour
     [SerializeField] private Transform spawnPos;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private float bounceForce = 10f;
 
     public UnityEvent<int> OnScoreChanged { get; private set; }
 
     private int score = 0;
 
+    private new Rigidbody2D rigidbody2D;
+
     private void Awake()
     {
+        rigidbody2D = GetComponent<Rigidbody2D>();
+
         OnScoreChanged = new UnityEvent<int>();
     }
 
@@ -26,11 +31,14 @@ public class Balloon : MonoBehaviour
             Respawn();
         }
 
-        // If we hit the ground
+        // If we hit the player
         if (((1 << col.gameObject.layer) & playerMask) != 0)
         {
             score++;
             OnScoreChanged.Invoke(score);
+
+            Vector2 hitNormal = col.GetContact(0).normal;
+            rigidbody2D.AddForce(hitNormal * bounceForce, ForceMode2D.Impulse);
         }
     }
 

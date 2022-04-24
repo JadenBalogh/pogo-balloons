@@ -16,6 +16,6 @@ public class ScoreText : MonoBehaviour
 
     private void Start()
     {  
-        // balloon.OnScoreChanged.AddListener(() => textbox )
+        balloon.OnScoreChanged.AddListener((score) => textbox.text = "Bounces: " + score.ToString());
     }
 }
