@@ -39,6 +39,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         instance = this;
 
+        Team1Score = 0;
+        Team2Score = 0;
+        Player = null;
+        Balloon = null;
+
         OnScoreChanged = new UnityEvent<int, int>();
         OnGameEnd = new UnityEvent<int>();
 

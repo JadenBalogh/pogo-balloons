@@ -48,6 +48,11 @@ public class Player : MonoBehaviourPun
         PlayerNumbering.OnPlayerNumberingChanged += UpdateColor;
     }
 
+    private void OnDestroy()
+    {
+        PlayerNumbering.OnPlayerNumberingChanged -= UpdateColor;
+    }
+
     private void UpdateColor()
     {
         playerVisual.GetComponent<SpriteRenderer>().color = TeamNumber == 0 ? GameManager.Team1Color : GameManager.Team2Color;
